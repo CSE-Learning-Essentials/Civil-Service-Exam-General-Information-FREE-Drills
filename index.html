@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Civil Service Exam Practice Test - R.A. 6713</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .choices li {
+      list-style: none;
+      margin: 5px 0;
+    }
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+    .incorrect {
+      color: red;
+      font-weight: bold;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Civil Service Exam Practice Test</h1>
+<p><strong>Created by:</strong> CSE Learning Essentials</p>
+<p><strong>Section 4:</strong> General Information - Part 2: R.A. 6713</p>
+<p><strong>Passing Score:</strong> 8/10</p>
+<p><em>Direction:</em> Choose the correct answer from the choices given.</p>
+
+<form id="quizForm">
+  <!-- Questions inserted dynamically -->
+</form>
+
+<div id="result" class="result"></div>
+
+<script>
+  const questions = [
+    {
+      q: "1. This is an act establishing a code of conduct and ethical standards for public officials and employees.",
+      choices: ["R.A #6713", "R.A #6731", "R.A #6371", "R.A #6317"],
+      answer: "A"
+    },
+    {
+      q: "2. Republic Act #6713 establishes which of the following?",
+      choices: [
+        "Code of Professionalism and Ethical Behaviour",
+        "Code of Professional Behaviour and Ethics",
+        "Code of Conduct and Ethical Standards for Public Officials and Employees",
+        "Code of Public Trust and Ethical Standards"
+      ],
+      answer: "C"
+    },
+    {
+      q: "3. It is the policy of the state to promote __ of ethics in public service.",
+      choices: ["Accountability", "Standard", "High standard", "Practice"],
+      answer: "C"
+    },
+    {
+      q: "4. They include elective and appointed officials and employees, permanent or temporary...",
+      choices: ["Government", "Career", "Public officials", "Service"],
+      answer: "C"
+    },
+    {
+      q: "5. Family of public officials and employees includes unmarried children under __ years.",
+      choices: ["15", "21", "18", "25"],
+      answer: "C"
+    },
+    {
+      q: "6. What type of lifestyle is encouraged for public officials and their families?",
+      choices: ["Modest and simple living", "Extravagant spending", "Luxurious living", "High-profile lifestyle"],
+      answer: "A"
+    },
+    {
+      q: "7. What is the role of the Sandiganbayan as stated in the law?",
+      choices: [
+        "Manage elections",
+        "Handle administrative tasks",
+        "Implement tax policies",
+        "Oversee civil and criminal cases involving graft"
+      ],
+      answer: "D"
+    },
+    {
+      q: "8. Public officials are required to disclose which of the following under oath?",
+      choices: ["Monthly budget", "Criminal records", "Educational background", "Assets, liabilities, and financial interests"],
+      answer: "D"
+    },
+    {
+      q: "9. What does 'Political Neutrality' mean under R.A. 6713?",
+      choices: [
+        "Favoring a political party",
+        "Providing service regardless of party affiliation",
+        "Promoting one's own political beliefs",
+        "Campaigning during office hours"
+      ],
+      answer: "B"
+    },
+    {
+      q: "10. What is the main principle emphasized in Republic Act No. 6713?",
+      choices: [
+        "Public office is a private right",
+        "Public office is a public trust",
+        "Public office is a personal gain",
+        "Public office is a business opportunity"
+      ],
+      answer: "B"
+    }
+  ];
+
+  const quizForm = document.getElementById("quizForm");
+
+  // Render questions
+  questions.forEach((q, index) => {
+    const qNum = index + 1;
+    const div = document.createElement("div");
+    div.className = "question";
+    div.innerHTML = `<p><strong>${q.q}</strong></p><ul class="choices">` +
+      q.choices.map((choice, i) => {
+        const letter = String.fromCharCode(65 + i); // A, B, C, D
+        return `<li><label><input type="radio" name="q${qNum}" value="${letter}"> ${letter}) ${choice}</label></li>`;
+      }).join("") +
+      `</ul><p id="explanation${qNum}"></p>`;
+    quizForm.appendChild(div);
+  });
+
+  function checkAnswers() {
+    let score = 0;
+    const result = document.getElementById("result");
+
+    questions.forEach((q, index) => {
+      const qNum = index + 1;
+      const selected = document.querySelector(`input[name="q${qNum}"]:checked`);
+      const explanation = document.getElementById(`explanation${qNum}`);
+      const correctLetter = q.answer;
+      const correctChoice = q.choices[correctLetter.charCodeAt(0) - 65];
+      const allChoices = document.getElementsByName(`q${qNum}`);
+
+      allChoices.forEach(input => {
+        const label = input.parentElement;
+        const letter = input.value;
+        if (letter === correctLetter) {
+          label.classList.add("correct");
+        }
+        if (selected && input.checked && letter !== correctLetter) {
+          label.classList.add("incorrect");
+        }
+        input.disabled = true;
+      });
+
+      if (selected && selected.value === correctLetter) {
+        score++;
+      }
+
+      explanation.innerHTML = selected && selected.value === correctLetter
+        ? `<span class="correct">✅ Correct!</span>`
+        : `<span class="correct">✅ Correct Answer: ${correctLetter}) ${correctChoice}</span>`;
+    });
+
+    result.innerHTML = score >= 8
+      ? `🎉 You passed! Your score is: ${score}/10`
+      : `❌ You failed. Your score is: ${score}/10`;
+    result.style.color = score >= 8 ? "green" : "red";
+  }
+
+  const submitButton = document.createElement("button");
+  submitButton.type = "button";
+  submitButton.textContent = "Submit";
+  submitButton.onclick = checkAnswers;
+  quizForm.appendChild(submitButton);
+</script>
+
+</body>
+</html>
